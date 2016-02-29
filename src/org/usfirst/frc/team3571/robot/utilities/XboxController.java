@@ -15,7 +15,6 @@ public class XboxController {
     int port=0, buttonState=0, buttonCount=0;
     Button[] buttons=new Button[10];
     short lRumble=0, rRumble=0;
-    double deadZoneLeft=0, deadZoneRight=0;
     
     public Axis LeftStick=new Axis(0,0), RightStick=new Axis(0,0);
     public triggers Triggers=new triggers(0,0);
@@ -36,16 +35,15 @@ public class XboxController {
      * @param rightDeadZone The magnitude of the dead zone on the right stick
      */
     public XboxController(int port,double leftDeadZone, double rightDeadZone){
-    	deadZoneLeft = leftDeadZone * leftDeadZone;
-    	deadZoneRight = rightDeadZone * rightDeadZone;
+    	setDeadZones(leftDeadZone,rightDeadZone);
     	dStation = DriverStation.getInstance();
-    	this.port=port;
-        for(int ii=0;ii<10;ii++){
+    	this.port = port;
+        for(int ii = 0; ii  < 10; ii++){
         	buttons[ii]=new Button();
         }
         refresh();
-        Buttons=new ButtonRemap();
-        buttonCount=dStation.getStickButtonCount(port);
+        Buttons = new ButtonRemap();
+        buttonCount = dStation.getStickButtonCount(port);
     }
     /**
      * Sets up the controller with dead zones
@@ -116,8 +114,8 @@ public class XboxController {
      * @param rightStick The magnitude of the dead zone in the RightStick
      */
     public void setDeadZones(double leftStick, double rightStick){
-    	deadZoneLeft=leftStick * leftStick;
-    	deadZoneRight=rightStick * rightStick;
+    	LeftStick.deadZone = leftStick * leftStick;
+    	RightStick.deadZone = rightStick * rightStick;
     }
     /**
      * Calculates the magnitude of on of the sticks
@@ -135,22 +133,12 @@ public class XboxController {
     void getLeftStick(){
     	LeftStick.X = dStation.getStickAxis(port, 0);
     	LeftStick.Y = dStation.getStickAxis(port, 1);
-    	if(deadZoneLeft!=0){
-    		if(LeftStick.X * LeftStick.X + LeftStick.Y * LeftStick.Y < deadZoneLeft){
-    	    	LeftStick.X = 0;
-    	    	LeftStick.Y = 0;
-    		}
-    	}
+    	LeftStick.applyDeadzone();
     }
     void getRightStick(){
     	RightStick.X = dStation.getStickAxis(port, 4);
     	RightStick.Y = dStation.getStickAxis(port, 5);
-    	if(deadZoneRight!=0){
-    		if(RightStick.X * RightStick.X + RightStick.Y * RightStick.Y < deadZoneRight){
-    			RightStick.X = 0;
-    			RightStick.Y = 0;
-    		}
-    	}
+    	RightStick.applyDeadzone();
     }
     void getTrigger(){
         Triggers.Left = dStation.getStickAxis(port, 2);
@@ -193,10 +181,19 @@ public class XboxController {
     }
     
     public class Axis{
-        public double X,Y;
+        public double X, Y;
+        double deadZone = 0;
         public Axis(double x,double y){
             X = x;
             Y = y;
+        }
+        void applyDeadzone(){
+        	if(deadZone!=0){
+        		if(X * X + Y * Y < deadZone){
+        			X = 0;
+        			Y = 0;
+        		}
+        	}
         }
     }
     public static class Button{
