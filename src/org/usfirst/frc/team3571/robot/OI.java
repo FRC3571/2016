@@ -10,16 +10,16 @@ import edu.wpi.first.wpilibj.*;
  */
 public class OI extends RobotMap {
 	
-	private static final double controllerDeadzone = 0.25;
+	private static final double ControllerDeadzone = 0.25;
 	
-	public static XboxController driver = new XboxController(DriverUSB.driverController, controllerDeadzone);
-	public static XboxController operator = new XboxController(DriverUSB.operatorController, controllerDeadzone);
+	public static XboxController driver = new XboxController(DriverUSB.DriverController, ControllerDeadzone);
+	public static XboxController operator = new XboxController(DriverUSB.OperatorController, ControllerDeadzone);
 	
-	public static RobotDrive drive = new RobotDrive(PWM.leftFrontDriveMotor,PWM.leftRearDriveMotor,PWM.rightFrontDriveMotor,PWM.rightRearDriveMotor);
+	public static RobotDrive drive = new RobotDrive(PWM.LeftFrontDriveMotor,PWM.LeftRearDriveMotor,PWM.RightFrontDriveMotor,PWM.RightRearDriveMotor);
 	
-	public static Talon arm = new Talon(PWM.armMotor);
-	public static Talon ballIntake = new Talon(PWM.ballIntakeMotor);
-	public static Talon lift = new Talon(PWM.liftMotor);
+	public static Talon arm = new Talon(PWM.ArmMotor);
+	public static Talon ballIntake = new Talon(PWM.BallIntakeMotor);
+	public static Talon lift = new Talon(PWM.LiftMotor);
 	//New objects go here
 	
 	/**Calls all Refresh methods**/
