@@ -13,6 +13,12 @@ public class SmartDashPref {
 	static Preferences pref = Preferences.getInstance();
 	static Vector<sType> vec= new Vector<sType>();
 	
+	/**
+	 * Put an Integer onto the SmartDashboard from Preferences
+	 * @param key Name of the Integer
+	 * @param defaultVal Uses this value if the key is not in the Preferences
+	 * @return The value that was sent to the SmartDashboard
+	 */
 	public static int addInt(String key, int defaultVal){
 		if (!pref.containsKey(key)) {
     		pref.putInt(key, defaultVal);
@@ -22,7 +28,13 @@ public class SmartDashPref {
 		vec.add(new sType(key,'i'));
 		return defaultVal;
 	}
-	
+
+	/**
+	 * Put a Double onto the SmartDashboard from Preferences
+	 * @param key Name of the Double
+	 * @param defaultVal Uses this value if the key is not in the Preferences
+	 * @return The value that was sent to the SmartDashboard
+	 */
 	public static double addDouble(String key, double defaultVal){
 		if (!pref.containsKey(key)) {
     		pref.putDouble(key, defaultVal);
@@ -32,7 +44,13 @@ public class SmartDashPref {
 		vec.add(new sType(key,'d'));
 		return defaultVal;
 	}
-	
+
+	/**
+	 * Put a String onto the SmartDashboard from Preferences
+	 * @param key Name of the String
+	 * @param defaultVal Uses this value if the key is not in the Preferences
+	 * @return The value that was sent to the SmartDashboard
+	 */
 	public static String addString(String key, String defaultVal){
 		if (!pref.containsKey(key)) {
     		pref.putString(key, defaultVal);
@@ -44,9 +62,9 @@ public class SmartDashPref {
 	}
 	
 	/**
-	 * Updates all added values from SmartDashBoard to Preferences
+	 * Sends all added values from SmartDashBoard to Preferences
 	 */
-	public static void updateAll(){
+	public static void updateAllPref(){
 		for(sType s : vec){
 			switch(s.type){
 			case 'i':
